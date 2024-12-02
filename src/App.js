@@ -6,12 +6,18 @@ import React from 'react';
 // import Tabla_vehiculos from './commponents/Tabla_vehiculos';
 // import Tabla_Especies from './commponents/Tabla_Especies';
 import Prueba from './commponents/Prueba';
+import Sidebar from './commponents/Slidebar';
 
 
 function App() {
   return (
-    <div className="App">
-        <Prueba />
+   <div style={{ display: "flex" }}>
+        <Sidebar />
+      <div style={{ flex: 1, padding: "20px" }}>
+        <div className="App">
+            <Prueba />
+        </div>
+      </div>
     </div>
   );
 }
