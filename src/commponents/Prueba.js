@@ -94,9 +94,9 @@ function Tabla_Naves() {
     <>
       <Paper>
         <TableContainer>
-          <Table sx={{ width: '100vh' }}>
+          <Table>
             <TableHead>
-              <TableRow sx={{ width: '100vh' }}>
+              <TableRow>
               <TableCell>Nombre</TableCell>
               <TableCell>Modelo</TableCell>
               <TableCell>Clase</TableCell>
@@ -144,7 +144,7 @@ function Tabla_Naves() {
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Peelicula" : "Detalles de la pelicula"}</h2>
+          <h2>{isEditable ? "Editar Nave" : "Detalles de la nave"}</h2>
           <Formik
             initialValues={selectedNavesEspaciales || {}}
             validationSchema={isEditable ? validationSchema : null}

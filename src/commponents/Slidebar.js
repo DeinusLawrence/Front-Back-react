@@ -1,12 +1,19 @@
 import React from "react";
-import { FaHome, FaUserAlt, FaCog } from "react-icons/fa"; // Ejemplo de iconos
+import { FaUserAlt } from "react-icons/fa"; // Ejemplo de iconos
+import { IoMdPlanet, IoMdPeople } from "react-icons/io";
+import { MdLocalMovies } from "react-icons/md";
+import { IoCarSport } from "react-icons/io5";
+import { GiSpaceship } from "react-icons/gi";
 import '../Styles/sliderbar.css';
 
 const Sidebar = () => {
   const menuItems = [
-    { id: 1, icon: <FaHome />, label: "Inicio" },
-    { id: 2, icon: <FaUserAlt />, label: "Perfil" },
-    { id: 3, icon: <FaCog />, label: "Configuración" },
+    { id: 1, icon: <FaUserAlt />, label: "Personajes" },
+    { id: 2, icon: <IoMdPlanet />, label: "Planetas" },
+    { id: 3, icon: <MdLocalMovies  />, label: "Peliculas" },
+    { id: 4, icon: <IoCarSport />, label: "Vehiculos" },
+    { id: 5, icon: <GiSpaceship />, label: "Naves Espaciales" },
+    { id: 6, icon: <IoMdPeople />, label: "Especies" },
   ];
 
   return (

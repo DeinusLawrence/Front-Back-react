@@ -138,7 +138,7 @@ function Tabla_Peliculas() {
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Peelicula" : "Detalles de la pelicula"}</h2>
+          <h2>{isEditable ? "Editar Pelicula" : "Detalles de la pelicula"}</h2>
           <Formik
             initialValues={selectedPeliculas || {}}
             validationSchema={isEditable ? validationSchema : null}
