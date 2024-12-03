@@ -15,6 +15,7 @@ function Tabla_Naves() {
   const [isEditable, setIsEditable] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Controla el spinner
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
 
   const obtenerNavesEspaciales = async (page, limit) => {
     try {
@@ -41,7 +42,6 @@ function Tabla_Naves() {
     setPage(0);
   };
 
-  // Mostrar datos en el modal
   const handleVer = (naveEspacial) => {
     setSelectedNavesEspaciales(naveEspacial);
     setIsEditable(false);
@@ -54,35 +54,30 @@ function Tabla_Naves() {
     setIsModalOpen(true);
   };
 
-  // Validación de campos requeridos con Yup
   const validationSchema = Yup.object({
-    nombre: Yup.string().required('Campo obligatorio'),
-    modelo: Yup.string().required('Campo obligatorio'),
-    clase: Yup.string().required('Campo obligatorio'),
-    tamaño: Yup.number().required('Campo obligatoriop').typeError('Debe ser un número'),
-    numeroPasajeros: Yup.number().required('Campo obligatorio').typeError('Debe ser un número'),
+    nombre: Yup.string().required('Nombre obligatorio'),
+    modelo: Yup.string().required('Modelo obligatorio'),
+    clase: Yup.string().required('Clase obligatorio'),
+    tamaño: Yup.number().required('Tamaño obligatorio').typeError('Debe ser un número'),
+    numeroPasajeros: Yup.number().required('Numero de pasajeros obligatorio').typeError('Debe ser un número'),
   });
 
-  // Guardar cambios en el backend
   const handleGuardar = async (values) => {
     setIsLoading(true);
     try {
       await axios.put(`http://localhost:3000/api/naves-espaciales/${selectedNavesEspaciales._id}`, values);
-      console.log("Nave actualizada:", values);
       obtenerNavesEspaciales(page, rowsPerPage);
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Error al actualizar la Nave:", error);
+      console.error("Error al actualizar la nave:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Eliminar NaveEspacial
   const handleEliminar = async () => {
     try {
       await axios.delete(`http://localhost:3000/api/naves-espaciales/${selectedNavesEspaciales._id}`);
-      console.log("Nave eliminada:", selectedNavesEspaciales._id);
       obtenerNavesEspaciales(page, rowsPerPage);
       setIsDeleteModalOpen(false);
     } catch (error) {
@@ -90,39 +85,68 @@ function Tabla_Naves() {
     }
   };
 
+  const handleAgregar = async (values) => {
+    setIsLoading(true);
+    try {
+      const nuevaNave = {
+        nombre: values.nombre,
+        modelo: values.modelo,
+        clase: values.clase,
+        tamaño: values.tamaño,
+        numeroPasajeros: values.numeroPasajeros,
+        velocidadMaximaAtmosferica: values.velocidadMaximaAtmosferica,
+        hiperimpulsor: values.hiperimpulsor,
+        MGLT: values.MGLT,
+        capacidadCarga: values.capacidadCarga,
+        tiempoMaximoConsumibles: values.tiempoMaximoConsumibles,
+        url: values.url,
+      };
+  
+      const response = await axios.post('http://localhost:3000/api/naves-espaciales', nuevaNave);
+  
+      if (response.status === 201) {
+        obtenerNavesEspaciales(page, rowsPerPage); // Actualizar la lista de naves
+        setIsAddModalOpen(false); // Cerrar el modal
+      }
+    } catch (error) {
+      console.error("Error al agregar la nave:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+          Agregar Registro
+        </Button>
+      </Box>
       <Paper>
         <TableContainer>
-          <Table sx={{ width: '100vh' }}>
+          <Table>
             <TableHead>
-              <TableRow sx={{ width: '100vh' }}>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Modelo</TableCell>
-              <TableCell>Clase</TableCell>
-              <TableCell>Tamaño</TableCell>
-              <TableCell>Pasajeros</TableCell>
-              <TableCell>Acciones</TableCell>
+              <TableRow>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Modelo</TableCell>
+                <TableCell>Clase</TableCell>
+                <TableCell>Tamaño</TableCell>
+                <TableCell>Pasajeros</TableCell>
+                <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {NavesEspaciales.map((naveEspacial) => (
                 <TableRow key={naveEspacial._id}>
-                  <TableCell sx={{ width: '20%' }}>{naveEspacial.nombre}</TableCell>
+                  <TableCell>{naveEspacial.nombre}</TableCell>
                   <TableCell>{naveEspacial.modelo}</TableCell>
                   <TableCell>{naveEspacial.clase}</TableCell>
                   <TableCell>{naveEspacial.tamaño}</TableCell>
                   <TableCell>{naveEspacial.numeroPasajeros}</TableCell>
                   <TableCell className="Acciones">
-                    <div className="Ver" onClick={() => handleVer(naveEspacial)}>
-                      Ver
-                    </div>
-                    <div className="Editar" onClick={() => handleEditar(naveEspacial)}>
-                      Editar
-                    </div>
-                    <div className="Eliminar" onClick={() => { setSelectedNavesEspaciales(naveEspacial); setIsDeleteModalOpen(true); }}>
-                      Eliminar
-                    </div>
+                    <div className='Ver' onClick={() => handleVer(naveEspacial)}>Ver</div>
+                    <div className='Editar' onClick={() => handleEditar(naveEspacial)}>Editar</div>
+                    <div className='Eliminar' onClick={() => { setSelectedNavesEspaciales(naveEspacial); setIsDeleteModalOpen(true); }}>Eliminar</div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -141,77 +165,35 @@ function Tabla_Naves() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      {/* Modal para Ver/Editar */}
+      {/* Modal de Ver/Editar Nave */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Peelicula" : "Detalles de la pelicula"}</h2>
+          <h2>{isEditable ? "Editar Nave" : "Detalles de la nave"}</h2>
           <Formik
             initialValues={selectedNavesEspaciales || {}}
             validationSchema={isEditable ? validationSchema : null}
-            onSubmit={(values) => handleGuardar(values)}
+            onSubmit={handleGuardar}
             enableReinitialize
           >
             {({ isSubmitting }) => (
               <Form>
-                <Field
-                  as={TextField}
-                  name="nombre"
-                  label="Nombre"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
-                <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
+                <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
 
-                <Field
-                  as={TextField}
-                  name="modelo"
-                  label="Modelo"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
-                <ErrorMessage name="modelo" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
+                <Field as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <ErrorMessage name="modelo" component="div" style={{ color: 'red' }} />
 
-                <Field
-                  as={TextField}
-                  name="clase"
-                  label="Clase"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
-                <ErrorMessage name="clase" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
+                <Field as={TextField} name="clase" label="Clase" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <ErrorMessage name="clase" component="div" style={{ color: 'red' }} />
 
-                <Field
-                  as={TextField}
-                  name="tamaño"
-                  label="Tamaño"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
-                <ErrorMessage name="tamaño" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
+                <Field as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <ErrorMessage name="tamaño" component="div" style={{ color: 'red' }} />
 
-                <Field
-                  as={TextField}
-                  name="numeroPasajeros"
-                  label="NumeroPasajeros"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
-                <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
+                <Field as={TextField} name="numeroPasajeros" label="Pasajeros" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red' }} />
 
                 {isEditable && (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    disabled={isSubmitting || isLoading}
-                    sx={{ mt: 2 }}
-                  >
+                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
                     {isLoading ? <CircularProgress size={24} /> : "Guardar"}
                   </Button>
                 )}
@@ -225,12 +207,77 @@ function Tabla_Naves() {
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
           <h2>¿Seguro que deseas eliminar este registro?</h2>
-          <Button variant="contained" color="error" onClick={handleEliminar} sx={{ mt: 2, mr: 2 }}>
-            Sí, eliminar
+          <Button variant="contained" color="secondary" onClick={handleEliminar} disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : "Eliminar"}
           </Button>
-          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
+          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)} sx={{ mt: 2 }}>
             Cancelar
           </Button>
+        </Box>
+      </Modal>
+
+      {/* Modal de agregar nave */}
+      <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
+        <Box className="modal-content">
+          <h2>Agregar Nueva Nave</h2>
+          <Formik
+              initialValues={{
+                nombre: '',
+                modelo: '',
+                clase: '',
+                tamaño: '',
+                numeroPasajeros: '',
+                velocidadMaximaAtmosferica: '',
+                hiperimpulsor: '',
+                MGLT: '',
+                capacidadCarga: '',
+                tiempoMaximoConsumibles: '',
+                url: ''
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleAgregar}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                  <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" />
+                  <ErrorMessage name="modelo" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="clase" label="Clase" fullWidth margin="normal" />
+                  <ErrorMessage name="clase" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" />
+                  <ErrorMessage name="tamaño" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="numeroPasajeros" label="Número de Pasajeros" fullWidth margin="normal" />
+                  <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="velocidadMaximaAtmosferica" label="Velocidad Máxima Atmosférica" fullWidth margin="normal" />
+                  <ErrorMessage name="velocidadMaximaAtmosferica" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="hiperimpulsor" label="Hiperimpulsor" fullWidth margin="normal" />
+                  <ErrorMessage name="hiperimpulsor" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="MGLT" label="MGLT" fullWidth margin="normal" />
+                  <ErrorMessage name="MGLT" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="capacidadCarga" label="Capacidad de Carga" fullWidth margin="normal" />
+                  <ErrorMessage name="capacidadCarga" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="tiempoMaximoConsumibles" label="Tiempo Máximo Consumibles" fullWidth margin="normal" />
+                  <ErrorMessage name="tiempoMaximoConsumibles" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
+
+                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                    {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
+                  </Button>
+                </Form>
+              )}
+          </Formik>
         </Box>
       </Modal>
     </>

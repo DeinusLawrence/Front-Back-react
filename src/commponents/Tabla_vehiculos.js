@@ -15,6 +15,7 @@ function Tabla_Vehiculos() {
   const [isEditable, setIsEditable] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Controla el spinner
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
 
   const obtenerVehiculos = async (page, limit) => {
     try {
@@ -90,8 +91,41 @@ function Tabla_Vehiculos() {
     }
   };
 
+  const handleAgregar = async (values) => {
+    setIsLoading(true);
+    try {
+      const nuevoVehiculo = {
+        nombre: values.nombre,
+        modelo: values.modelo,
+        clase: values.clase,
+        tamaño: values.tamaño,
+        numeroPasajeros: values.numeroPasajeros,
+        velocidadMaximaAtmosferica: values.velocidadMaximaAtmosferica,
+        capacidadMaxima: values.capacidadMaxima,
+        tiempoMaximoConsumibles: values.tiempoMaximoConsumibles,
+        url: values.url,
+      };
+  
+      const response = await axios.post('http://localhost:3000/api/vehiculos', nuevoVehiculo);
+  
+      if (response.status === 201) {
+        obtenerVehiculos(page, rowsPerPage); // Actualizar la lista de naves
+        setIsAddModalOpen(false); // Cerrar el modal
+      }
+    } catch (error) {
+      console.error("Error al agregar la nave:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+          Agregar Registro
+        </Button>
+      </Box>
       <Paper>
         <TableContainer>
           <Table sx={{ width: '100vh' }}>
@@ -114,15 +148,9 @@ function Tabla_Vehiculos() {
                   <TableCell>{vehiculo.tamaño}</TableCell>
                   <TableCell>{vehiculo.numeroPasajeros}</TableCell>
                   <TableCell className="Acciones">
-                    <div className="Ver" onClick={() => handleVer(vehiculo)}>
-                      Ver
-                    </div>
-                    <div className="Editar" onClick={() => handleEditar(vehiculo)}>
-                      Editar
-                    </div>
-                    <div className="Eliminar" onClick={() => { setSelectedVehiculo(vehiculo); setIsDeleteModalOpen(true); }}>
-                      Eliminar
-                    </div>
+                    <div className="Ver" onClick={() => handleVer(vehiculo)}>Ver</div>
+                    <div className="Editar" onClick={() => handleEditar(vehiculo)}>Editar</div>
+                    <div className="Eliminar" onClick={() => { setSelectedVehiculo(vehiculo); setIsDeleteModalOpen(true); }}>Eliminar</div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -163,44 +191,16 @@ function Tabla_Vehiculos() {
                 />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="modelo"
-                  label="Modelo"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }}/>
                 <ErrorMessage name="modelo" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="clase"
-                  label="Clase"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="clase" label="Clase" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="clase" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="tamaño"
-                  label="Tamaño"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="tamaño" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="numeroPasajeros"
-                  label="Pasajeros"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="numeroPasajeros" label="Pasajeros" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
                 {isEditable && (
@@ -236,6 +236,63 @@ function Tabla_Vehiculos() {
           <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
+        </Box>
+      </Modal>
+
+       {/* Modal de agregar vehiculo */}
+       <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
+        <Box className="modal-content">
+          <h2>Agregar Nuevo vehiculo</h2>
+          <Formik
+              initialValues={{
+                nombre: '',
+                modelo: '',
+                clase: '',
+                tamaño: '',
+                numeroPasajeros: '',
+                velocidadMaximaAtmosferica: '',
+                capacidadMaxima: '',
+                tiempoMaximoConsumibles: '',
+                url: ''
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleAgregar}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                  <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" />
+                  <ErrorMessage name="modelo" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="clase" label="Clase" fullWidth margin="normal" />
+                  <ErrorMessage name="clase" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" />
+                  <ErrorMessage name="tamaño" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="numeroPasajeros" label="Número de Pasajeros" fullWidth margin="normal" />
+                  <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="velocidadMaximaAtmosferica" label="Velocidad Máxima Atmosférica" fullWidth margin="normal" />
+                  <ErrorMessage name="velocidadMaximaAtmosferica" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="capacidadMaxima" label="CapacidadMaxima" fullWidth margin="normal" />
+                  <ErrorMessage name="capacidadMaxima" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="tiempoMaximoConsumibles" label="Tiempo Máximo Consumibles" fullWidth margin="normal" />
+                  <ErrorMessage name="tiempoMaximoConsumibles" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
+
+                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                    {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
+                  </Button>
+                </Form>
+              )}
+          </Formik>
         </Box>
       </Modal>
     </>

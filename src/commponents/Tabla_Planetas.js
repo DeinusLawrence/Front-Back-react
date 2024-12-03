@@ -15,6 +15,7 @@ function Tabla_Planetas() {
   const [isEditable, setIsEditable] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Controla el spinner
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
 
   const obtenerPlanetas = async (page, limit) => {
     try {
@@ -90,8 +91,38 @@ function Tabla_Planetas() {
     }
   };
 
+  const handleAgregar = async (values) => {
+    setIsLoading(true);
+    try {
+      const nuevoPlaneta = {
+        nombre: values.nombre,
+        diametro: values.diametro,
+        poblacion: values.poblacion,
+        clima: values.clima,
+        terreno: values.terreno,
+        url: values.url,
+      };
+  
+      const response = await axios.post('http://localhost:3000/api/planetas', nuevoPlaneta);
+  
+      if (response.status === 201) {
+        obtenerPlanetas(page, rowsPerPage); // Actualizar la lista de naves
+        setIsAddModalOpen(false); // Cerrar el modal
+      }
+    } catch (error) {
+      console.error("Error al agregar el planeta:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <>
+    <>      
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+      <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+        Agregar Registro
+      </Button>
+    </Box>
       <Paper>
         <TableContainer>
           <Table sx={{ width: '100vh' }}>
@@ -153,54 +184,19 @@ function Tabla_Planetas() {
           >
             {({ isSubmitting }) => (
               <Form>
-                <Field
-                  as={TextField}
-                  name="nombre"
-                  label="Nombre"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="diametro"
-                  label="Diametro"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="diametro" label="Diametro" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="diametro" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="poblacion"
-                  label="Poblacion"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="poblacion" label="Poblacion" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="poblacion" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="clima"
-                  label="Clima"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="clima" label="Clima" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="clima" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
-                  as={TextField}
-                  name="terreno"
-                  label="Terreno"
-                  fullWidth
-                  margin="normal"
-                  InputProps={{ readOnly: !isEditable }}
-                />
+                <Field as={TextField} name="terreno" label="Terreno" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="terreno" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
                 {isEditable && (
@@ -231,6 +227,51 @@ function Tabla_Planetas() {
           <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
+        </Box>
+      </Modal>
+
+      {/* Modal de agregar vehiculo */}
+      <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
+        <Box className="modal-content">
+          <h2>Agregar Nuevo planeta</h2>
+          <Formik
+              initialValues={{
+                nombre: '',
+                diametro: '',
+                poblacion: '',
+                clima: '',
+                terreno: '',
+                url: ''
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleAgregar}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                  <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="diametro" label="Diametro" fullWidth margin="normal" />
+                  <ErrorMessage name="diametro" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="poblacion" label="Poblacion" fullWidth margin="normal" />
+                  <ErrorMessage name="poblacion" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="clima" label="clima" fullWidth margin="normal" />
+                  <ErrorMessage name="clima" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="terreno" label="Terreno" fullWidth margin="normal" />
+                  <ErrorMessage name="terreno" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
+
+                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                    {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
+                  </Button>
+                </Form>
+              )}
+          </Formik>
         </Box>
       </Modal>
     </>

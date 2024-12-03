@@ -39,3 +39,23 @@ body{
     border-radius: 5px;
     text-align: center;
   }
+
+  .modal-content {
+    padding: 20px;
+    background-color: white;
+    margin: auto;
+    width: 400px;
+    max-height: 80vh; /* Limita el alto del modal al 80% de la altura de la ventana */
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    border-radius: 8px; /* Opcional: para bordes redondeados */
+  }
+  
+  .modal-header {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .modal-button {
+    margin-top: 20px;
+  }
+  
