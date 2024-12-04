@@ -15,6 +15,7 @@ function Tabla_Especies() {
   const [isEditable, setIsEditable] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Controla el spinner
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
 
   const obtenerEspecies = async (page, limit) => {
     try {
@@ -90,8 +91,42 @@ function Tabla_Especies() {
     }
   };
 
+  const handleAgregar = async (values) => {
+    setIsLoading(true);
+    try {
+      const nuevaEspecie = {
+        nombre: values.nombre,
+        clasificacion: values.clasificacion,
+        designacion: values.designacion,
+        estatura: values.estatura,
+        promedioVida: values.promedioVida,
+        colorOjos: values.colorOjos,
+        colorCabello: values.colorCabello,
+        colorPiel: values.colorPiel,
+        lenguaje: values.lenguaje,
+        url: values.url,
+      };
+  
+      const response = await axios.post('http://localhost:3000/api/especies', nuevaEspecie);
+  
+      if (response.status === 201) {
+        obtenerEspecies(page, rowsPerPage); // Actualizar la lista de naves
+        setIsAddModalOpen(false); // Cerrar el modal
+      }
+    } catch (error) {
+      console.error("Error al agregar la especie:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+          Agregar Registro
+        </Button>
+      </Box>
       <Paper>
         <TableContainer>
           <Table sx={{ width: '100vh' }}>
@@ -236,6 +271,67 @@ function Tabla_Especies() {
           <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
+        </Box>
+      </Modal>
+
+        {/* Modal de agregar especie */}
+        <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
+        <Box className="modal-content">
+          <h2>Agregar Nueva especie</h2>
+          <Formik
+              initialValues={{
+                nombre: '',
+                clasificacion: '',
+                designacion: '',
+                estatura: '',
+                promedioVida: '',
+                colorOjos: '',
+                colorCabello: '',
+                colorPiel: '',
+                lenguaje: '',
+                url: ''
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleAgregar}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                  <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="clasificacion" label="Clasificacion" fullWidth margin="normal" />
+                  <ErrorMessage name="clasificacion" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="designacion" label="Designacion" fullWidth margin="normal" />
+                  <ErrorMessage name="designacion" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="estatura" label="Estatura" fullWidth margin="normal" />
+                  <ErrorMessage name="estatura" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="promedioVida" label="PromedioVida" fullWidth margin="normal" />
+                  <ErrorMessage name="promedioVida" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="colorOjos" label="ColorOjos" fullWidth margin="normal" />
+                  <ErrorMessage name="colorOjos" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="colorCabello" label="ColorCabello" fullWidth margin="normal" />
+                  <ErrorMessage name="colorCabello" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="colorPiel" label="ColorPiel" fullWidth margin="normal" />
+                  <ErrorMessage name="colorPiel" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="lenguaje" label="Lenguaje" fullWidth margin="normal" />
+                  <ErrorMessage name="lenguaje" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
+
+                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                    {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
+                  </Button>
+                </Form>
+              )}
+          </Formik>
         </Box>
       </Modal>
     </>

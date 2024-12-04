@@ -5,28 +5,37 @@ import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
 
-function Tabla_Peliculas() {
-  const [Peliculas, setPeliculas] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedPeliculas, setSelectedPeliculas] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditable, setIsEditable] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Controla el spinner
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
+  // Validación de campos requeridos con Yup
+  const validationSchema = Yup.object({
+    titulo: Yup.string().required('Campo obligatorio'),
+    director: Yup.string().required('Campo obligatorio'),
+    productor: Yup.string().required('Campo obligatorio'),
+  });
 
-  const obtenerPeliculas = async (page, limit) => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/peliculas?page=${page + 1}&limit=${limit}`);
-      const data = response.data;
+   //Estados
+  function Tabla_Peliculas() {
+    const [Peliculas, setPeliculas] = useState([]);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalCount, setTotalCount] = useState(0);
+    const [selectedPeliculas, setSelectedPeliculas] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditable, setIsEditable] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // Controla el spinner
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
 
-      setPeliculas(data.peliculas);
-      setTotalCount(data.totalCount);
-    } catch (error) {
-      console.error("Error al obtener los planetas: ", error);
-    }
-  };
+    const obtenerPeliculas = async (page, limit) => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/peliculas?page=${page + 1}&limit=${limit}`);
+        const data = response.data;
+
+        setPeliculas(data.peliculas);
+        setTotalCount(data.totalCount);
+      } catch (error) {
+        console.error("Error al obtener los planetas: ", error);
+      }
+    };
 
   useEffect(() => {
     obtenerPeliculas(page, rowsPerPage);
@@ -53,13 +62,6 @@ function Tabla_Peliculas() {
     setIsEditable(true);
     setIsModalOpen(true);
   };
-
-  // Validación de campos requeridos con Yup
-  const validationSchema = Yup.object({
-    titulo: Yup.string().required('Campo obligatorio'),
-    director: Yup.string().required('Campo obligatorio'),
-    productor: Yup.string().required('Campo obligatorio'),
-  });
 
   // Guardar cambios en el backend
   const handleGuardar = async (values) => {
@@ -88,8 +90,36 @@ function Tabla_Peliculas() {
     }
   };
 
+  const handleAgregar = async (values) => {
+    setIsLoading(true);
+    try {
+      const nuevaPelicula = {
+        titulo: values.titulo,
+        director: values.director,
+        productor: values.productor,
+        url: values.url,
+      };
+  
+      const response = await axios.post('http://localhost:3000/api/peliculas', nuevaPelicula);
+  
+      if (response.status === 201) {
+        obtenerPeliculas(page, rowsPerPage); // Actualizar la lista de naves
+        setIsAddModalOpen(false); // Cerrar el modal
+      }
+    } catch (error) {
+      console.error("Error al agregar la pelicula:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+          Agregar Registro
+        </Button>
+      </Box>
       <Paper>
         <TableContainer>
           <Table sx={{ width: '100vh' }}>
@@ -205,6 +235,43 @@ function Tabla_Peliculas() {
           <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
+        </Box>
+      </Modal>
+
+        {/* Modal de agregar pelicula */}
+        <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
+        <Box className="modal-content">
+          <h2>Agregar Nueva pelicula</h2>
+          <Formik
+              initialValues={{
+                titulo: '',
+                director: '',
+                productor: '',
+                url: ''
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleAgregar}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <Field as={TextField} name="titulo" label="Titulo" fullWidth margin="normal" />
+                  <ErrorMessage name="titulo" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="director" label="Director" fullWidth margin="normal" />
+                  <ErrorMessage name="director" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="productor" label="Productor" fullWidth margin="normal" />
+                  <ErrorMessage name="productor" component="div" style={{ color: 'red' }} />
+
+                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
+
+                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                    {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
+                  </Button>
+                </Form>
+              )}
+          </Formik>
         </Box>
       </Modal>
     </>
