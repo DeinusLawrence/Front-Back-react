@@ -127,30 +127,30 @@ function Tabla_Vehiculos() {
         </Button>
       </Box>
       <Paper>
-        <TableContainer>
-          <Table sx={{ width: '100vh' }}>
+        <TableContainer className="table-container">
+          <Table className="custom-table">
             <TableHead>
-              <TableRow sx={{ width: '100vh' }}>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Modelo</TableCell>
-                <TableCell>Clase</TableCell>
-                <TableCell>Tamaño</TableCell>
-                <TableCell>Pasajeros</TableCell>
-                <TableCell>Acciones</TableCell>
+              <TableRow className="header-row">
+                <TableCell className="header-cell">Nombre</TableCell>
+                <TableCell className="header-cell">Modelo</TableCell>
+                <TableCell className="header-cell">Clase</TableCell>
+                <TableCell className="header-cell">Tamaño</TableCell>
+                <TableCell className="header-cell">Pasajeros</TableCell>
+                <TableCell className="header-cell">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Vehiculos.map((vehiculo) => (
-                <TableRow key={vehiculo._id}>
-                  <TableCell sx={{ width: '20%' }}>{vehiculo.nombre}</TableCell>
-                  <TableCell>{vehiculo.modelo}</TableCell>
-                  <TableCell>{vehiculo.clase}</TableCell>
-                  <TableCell>{vehiculo.tamaño}</TableCell>
-                  <TableCell>{vehiculo.numeroPasajeros}</TableCell>
-                  <TableCell className="Acciones">
-                    <div className="Ver" onClick={() => handleVer(vehiculo)}>Ver</div>
-                    <div className="Editar" onClick={() => handleEditar(vehiculo)}>Editar</div>
-                    <div className="Eliminar" onClick={() => { setSelectedVehiculo(vehiculo); setIsDeleteModalOpen(true); }}>Eliminar</div>
+                <TableRow key={vehiculo._id} className="body-row">
+                  <TableCell className="body-cell">{vehiculo.nombre}</TableCell>
+                  <TableCell className="body-cell">{vehiculo.modelo}</TableCell>
+                  <TableCell className="body-cell">{vehiculo.clase}</TableCell>
+                  <TableCell className="body-cell">{vehiculo.tamaño}</TableCell>
+                  <TableCell className="body-cell">{vehiculo.numeroPasajeros}</TableCell>
+                  <TableCell className="body-cell acciones">
+                    <div className="ver" onClick={() => handleVer(vehiculo)}>Ver</div>
+                    <div className="editar" onClick={() => handleEditar(vehiculo)}>Editar</div>
+                    <div className="eliminar" onClick={() => { setSelectedVehiculo(vehiculo); setIsDeleteModalOpen(true); }}>Eliminar</div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -160,7 +160,7 @@ function Tabla_Vehiculos() {
       </Paper>
       <TablePagination
         labelRowsPerPage="Registros por página"
-        rowsPerPageOptions={[5, 10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={totalCount}
         rowsPerPage={rowsPerPage}

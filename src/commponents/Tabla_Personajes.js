@@ -1,9 +1,11 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, TablePagination, Modal, Box, Button, CircularProgress, TextField } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { FaUserAlt } from "react-icons/fa";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
+import '../Styles/Modal.css';
 
   // Validación de campos requeridos con Yup
   const validationSchema = Yup.object({
@@ -142,49 +144,53 @@ import '../Styles/Tabla.css';
 
   return (
     <>
+    <div className='Titulo'>
+      <h1><FaUserAlt /> Personajes</h1>
+    </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
           Agregar Registro
         </Button>
       </Box>
       <Paper>
-        <TableContainer>
-          <Table sx={{ width: '100vh' }}>
-            <TableHead>
-              <TableRow sx={{ width: '100vh' }}>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Fecha de Nacimiento</TableCell>
-                <TableCell>Género</TableCell>
-                <TableCell>Color de Ojos</TableCell>
-                <TableCell>Altura</TableCell>
-                <TableCell>Peso</TableCell>
-                <TableCell>Acciones</TableCell>
+      <TableContainer className="table-container">
+        <Table className="custom-table">
+          <TableHead>
+            <TableRow className="header-row">
+              <TableCell className="header-cell">Nombre</TableCell>
+              <TableCell className="header-cell">Fecha de Nacimiento</TableCell>
+              <TableCell className="header-cell">Género</TableCell>
+              <TableCell className="header-cell">Color de Ojos</TableCell>
+              <TableCell className="header-cell">Altura</TableCell>
+              <TableCell className="header-cell">Peso</TableCell>
+              <TableCell className="header-cell">Acciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Personajes.map((personaje) => (
+              <TableRow key={personaje._id} className="body-row">
+                <TableCell className="body-cell">{personaje.nombre}</TableCell>
+                <TableCell className="body-cell">{personaje.fechaNacimiento}</TableCell>
+                <TableCell className="body-cell">{personaje.genero}</TableCell>
+                <TableCell className="body-cell">{personaje.colorOjos}</TableCell>
+                <TableCell className="body-cell">{personaje.altura}</TableCell>
+                <TableCell className="body-cell">{personaje.masa}</TableCell>
+                <TableCell className="body-cell acciones">
+                  <div className="ver" onClick={() => handleVer(personaje)}> Ver </div>
+                  <div className="editar" onClick={() => handleEditar(personaje)}> Editar </div>
+                  <div className="eliminar" onClick={() => { setSelectedPersonaje(personaje); setIsDeleteModalOpen(true); }}> Eliminar </div>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {Personajes.map((personaje) => (
-                <TableRow key={personaje._id}>
-                  <TableCell sx={{ width: '20%' }}>{personaje.nombre}</TableCell>
-                  <TableCell>{personaje.fechaNacimiento}</TableCell>
-                  <TableCell>{personaje.genero}</TableCell>
-                  <TableCell>{personaje.colorOjos}</TableCell>
-                  <TableCell>{personaje.altura}</TableCell>
-                  <TableCell>{personaje.masa}</TableCell>
-                  <TableCell className="Acciones">
-                    <div className="Ver" onClick={() => handleVer(personaje)}> Ver </div>
-                    <div className="Editar" onClick={() => handleEditar(personaje)}> Editar </div>
-                    <div className="Eliminar" onClick={() => { setSelectedPersonaje(personaje); setIsDeleteModalOpen(true); }}> Eliminar </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
       </Paper>
       
       <TablePagination
         labelRowsPerPage="Registros por página"
-        rowsPerPageOptions={[5, 10]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={totalCount}
         rowsPerPage={rowsPerPage}

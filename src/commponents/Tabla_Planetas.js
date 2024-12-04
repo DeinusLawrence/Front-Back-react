@@ -1,6 +1,7 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, TablePagination, Modal, Box, Button, CircularProgress, TextField } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { IoMdPlanet } from "react-icons/io";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
@@ -117,43 +118,40 @@ function Tabla_Planetas() {
   };
 
   return (
-    <>      
+    <> 
+    <div className='Titulo'>
+      <h1> <IoMdPlanet /> Planetas</h1>
+    </div>     
     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
       <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
         Agregar Registro
       </Button>
     </Box>
       <Paper>
-        <TableContainer>
-          <Table sx={{ width: '100vh' }}>
+        <TableContainer className="table-container">
+          <Table className="custom-table">
             <TableHead>
-              <TableRow sx={{ width: '100vh' }}>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Diametro</TableCell>
-                <TableCell>Poblacion</TableCell>
-                <TableCell>Clima</TableCell>
-                <TableCell>Terreno</TableCell>
-                <TableCell>Acciones</TableCell>
+              <TableRow className="header-row">
+                <TableCell className="header-cell">Nombre</TableCell>
+                <TableCell className="header-cell">Diametro</TableCell>
+                <TableCell className="header-cell">Poblacion</TableCell>
+                <TableCell className="header-cell">Clima</TableCell>
+                <TableCell className="header-cell">Terreno</TableCell>
+                <TableCell className="header-cell">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Planetas.map((planeta) => (
-                <TableRow key={planeta._id}>
-                  <TableCell sx={{ width: '20%' }}>{planeta.nombre}</TableCell>
-                  <TableCell>{planeta.diametro}</TableCell>
-                  <TableCell>{planeta.poblacion}</TableCell>
-                  <TableCell>{planeta.clima}</TableCell>
-                  <TableCell>{planeta.terreno}</TableCell>
-                  <TableCell className="Acciones">
-                    <div className="Ver" onClick={() => handleVer(planeta)}>
-                      Ver
-                    </div>
-                    <div className="Editar" onClick={() => handleEditar(planeta)}>
-                      Editar
-                    </div>
-                    <div className="Eliminar" onClick={() => { setSelectedPlaneta(planeta); setIsDeleteModalOpen(true); }}>
-                      Eliminar
-                    </div>
+                <TableRow key={planeta._id} className="body-row">
+                  <TableCell className="body-cell">{planeta.nombre}</TableCell>
+                  <TableCell className="body-cell">{planeta.diametro}</TableCell>
+                  <TableCell className="body-cell">{planeta.poblacion}</TableCell>
+                  <TableCell className="body-cell">{planeta.clima}</TableCell>
+                  <TableCell className="body-cell">{planeta.terreno}</TableCell>
+                  <TableCell className="body-cell acciones">
+                    <div className="ver" onClick={() => handleVer(planeta)}>ver</div>
+                    <div className="editar" onClick={() => handleEditar(planeta)}>Editar</div>
+                    <div className="eliminar" onClick={() => { setSelectedPlaneta(planeta); setIsDeleteModalOpen(true); }}>Eliminar</div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -163,7 +161,7 @@ function Tabla_Planetas() {
       </Paper>
       <TablePagination
         labelRowsPerPage="Registros por página"
-        rowsPerPageOptions={[5, 10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={totalCount}
         rowsPerPage={rowsPerPage}

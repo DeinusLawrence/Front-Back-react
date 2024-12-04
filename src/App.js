@@ -31,10 +31,8 @@ function App() {
 
   return (
     <div style={{ display: "flex" }}>
-      <Sidebar onSelectOption={setSelectedOption} />
-      <div className="ContenedorTablas">
-        {renderContent()}
-      </div>
+      <Sidebar selectedOption={selectedOption} onSelectOption={setSelectedOption} />
+      <div className="ContenedorTablas">{renderContent()}</div>
     </div>
   );
 }

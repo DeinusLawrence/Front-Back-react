@@ -123,30 +123,30 @@ function Tabla_Naves() {
         </Button>
       </Box>
       <Paper>
-        <TableContainer>
-          <Table>
+        <TableContainer className="table-container">
+          <Table className="custom-table">
             <TableHead>
-              <TableRow>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Modelo</TableCell>
-                <TableCell>Clase</TableCell>
-                <TableCell>Tamaño</TableCell>
-                <TableCell>Pasajeros</TableCell>
-                <TableCell>Acciones</TableCell>
+              <TableRow className="header-row">
+                <TableCell className="header-cell">Nombre</TableCell>
+                <TableCell className="header-cell">Modelo</TableCell>
+                <TableCell className="header-cell">Clase</TableCell>
+                <TableCell className="header-cell">Tamaño</TableCell>
+                <TableCell className="header-cell">Pasajeros</TableCell>
+                <TableCell className="header-cell">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {NavesEspaciales.map((naveEspacial) => (
-                <TableRow key={naveEspacial._id}>
-                  <TableCell>{naveEspacial.nombre}</TableCell>
-                  <TableCell>{naveEspacial.modelo}</TableCell>
-                  <TableCell>{naveEspacial.clase}</TableCell>
-                  <TableCell>{naveEspacial.tamaño}</TableCell>
-                  <TableCell>{naveEspacial.numeroPasajeros}</TableCell>
-                  <TableCell className="Acciones">
-                    <div className='Ver' onClick={() => handleVer(naveEspacial)}>Ver</div>
-                    <div className='Editar' onClick={() => handleEditar(naveEspacial)}>Editar</div>
-                    <div className='Eliminar' onClick={() => { setSelectedNavesEspaciales(naveEspacial); setIsDeleteModalOpen(true); }}>Eliminar</div>
+                <TableRow key={naveEspacial._id} className="body-row">
+                  <TableCell className="body-cell">{naveEspacial.nombre}</TableCell>
+                  <TableCell className="body-cell">{naveEspacial.modelo}</TableCell>
+                  <TableCell className="body-cell">{naveEspacial.clase}</TableCell>
+                  <TableCell className="body-cell">{naveEspacial.tamaño}</TableCell>
+                  <TableCell className="body-cell">{naveEspacial.numeroPasajeros}</TableCell>
+                  <TableCell className="body-cell acciones">
+                    <div className='ver' onClick={() => handleVer(naveEspacial)}>Ver</div>
+                    <div className='editar' onClick={() => handleEditar(naveEspacial)}>Editar</div>
+                    <div className='eliminar' onClick={() => { setSelectedNavesEspaciales(naveEspacial); setIsDeleteModalOpen(true); }}>Eliminar</div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -156,7 +156,7 @@ function Tabla_Naves() {
       </Paper>
       <TablePagination
         labelRowsPerPage="Registros por página"
-        rowsPerPageOptions={[5, 10]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={totalCount}
         rowsPerPage={rowsPerPage}

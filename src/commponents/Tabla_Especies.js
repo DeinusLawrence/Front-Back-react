@@ -128,36 +128,30 @@ function Tabla_Especies() {
         </Button>
       </Box>
       <Paper>
-        <TableContainer>
-          <Table sx={{ width: '100vh' }}>
+        <TableContainer className="table-container">
+          <Table className="custom-table">
             <TableHead>
-              <TableRow sx={{ width: '100vh' }}>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Clasificacion</TableCell>
-                <TableCell>Designacion</TableCell>
-                <TableCell>Estatura</TableCell>
-                <TableCell>Lenguaje</TableCell>
-                <TableCell>Acciones</TableCell>
+              <TableRow className="header-row">
+                <TableCell className="header-cell">Nombre</TableCell>
+                <TableCell className="header-cell">Clasificacion</TableCell>
+                <TableCell className="header-cell">Designacion</TableCell>
+                <TableCell className="header-cell">Estatura</TableCell>
+                <TableCell className="header-cell">Lenguaje</TableCell>
+                <TableCell className="header-cell">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Especies.map((especie) => (
-                <TableRow key={especie._id}>
-                  <TableCell sx={{ width: '20%' }}>{especie.nombre}</TableCell>
-                  <TableCell>{especie.clasificacion}</TableCell>
-                  <TableCell>{especie.designacion}</TableCell>
-                  <TableCell>{especie.estatura}</TableCell>
-                  <TableCell>{especie.lenguaje}</TableCell>
-                  <TableCell className="Acciones">
-                    <div className="Ver" onClick={() => handleVer(especie)}>
-                      Ver
-                    </div>
-                    <div className="Editar" onClick={() => handleEditar(especie)}>
-                      Editar
-                    </div>
-                    <div className="Eliminar" onClick={() => { setSelectedEspecie(especie); setIsDeleteModalOpen(true); }}>
-                      Eliminar
-                    </div>
+                <TableRow key={especie._id} className="body-row">
+                  <TableCell className="body-cell">{especie.nombre}</TableCell>
+                  <TableCell className="body-cell">{especie.clasificacion}</TableCell>
+                  <TableCell className="body-cell">{especie.designacion}</TableCell>
+                  <TableCell className="body-cell">{especie.estatura}</TableCell>
+                  <TableCell className="body-cell">{especie.lenguaje}</TableCell>
+                  <TableCell className="body-cell acciones">
+                    <div className="ver" onClick={() => handleVer(especie)}>Ver</div>
+                    <div className="editar" onClick={() => handleEditar(especie)}>Editar</div>
+                    <div className="eliminar" onClick={() => { setSelectedEspecie(especie); setIsDeleteModalOpen(true); }}>Eliminar</div>
                   </TableCell>
                 </TableRow>
               ))}

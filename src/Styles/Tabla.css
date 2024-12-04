@@ -1,61 +1,125 @@
-
-body{
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Contenedor de la tabla */
+.table-container {
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 100%;
+  max-height: 650px;
+  height: auto; 
+  overflow: auto;
 }
 
-.MuiTableCell-root.Acciones {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;  
-    gap: 5%; 
-  }
+/* Tabla principal */
+.custom-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse; 
+}
 
+/* Encabezado */
+.header-row {
+  background-color: #383838;
+}
 
-  .Acciones .Ver {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-  }
-  .Acciones .Editar {
-    padding: 5px 10px;
-    background-color: green;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-  }
+/* Texto encabezado */
+.header-row .header-cell {
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  width: 14%;
+}
 
-  .Acciones .Eliminar {
-    padding: 5px 10px;
-    background-color: red;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-  }
+/* Filas del cuerpo */
+.body-row:nth-child(odd) {
+  background-color: #f2f2f2;
+}
 
-  .modal-content {
-    padding: 20px;
-    background-color: white;
-    margin: auto;
-    width: 400px;
-    max-height: 80vh; /* Limita el alto del modal al 80% de la altura de la ventana */
-    overflow-y: auto; /* Permite el desplazamiento vertical */
-    border-radius: 8px; /* Opcional: para bordes redondeados */
-  }
-  
-  .modal-header {
-    text-align: center;
-    font-size: 1.5rem;
-  }
-  
-  .modal-button {
-    margin-top: 20px;
-  }
+.body-row:hover {
+  background-color: #FFAA2C;
+}
+
+.body-cell {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  width: 15%;
+}
+
+/* Estilo de las acciones */
+.acciones div {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.body-cell.acciones {
+  text-align: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.ver {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.editar {
+  padding: 5px 10px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.eliminar {
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.ver, .editar, .eliminar {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+  text-align: center;
+}
+
+.ver:hover, .editar:hover, .eliminar:hover {
+  opacity: 0.8;
+}
+
+.Titulo{
+  height: 8%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  background-color: #383838;
+  color: #ffff;
+  font-family: sans-serif;
+  margin-bottom: 1%;
+  border-radius: 10px;
+}
+
+.Titulo h1 {
+  margin-left: 1%;
+}
   
