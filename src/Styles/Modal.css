@@ -1,18 +1,87 @@
-.modal-content {
-    padding: 20px;
-    background-color: white;
-    margin: auto;
-    width: 400px;
-    max-height: 80vh; 
-    overflow-y: auto; 
-    border-radius: 8px; 
-  }
-  
-  .modal-header {
-    text-align: center;
-    font-size: 1.5rem;
-  }
-  
-  .modal-button {
-    margin-top: 20px;
-  }
+/* Contenedor principal del modal */
+.modal-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  width: 400px;
+  font-family: sans-serif;
+  max-height: 850px;
+  overflow-y: scroll; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+/* Título del modal */
+.modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  text-align: center;
+  color: #333;
+}
+
+/* Formulario del modal */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaciado entre campos */
+
+}
+
+/* Campo individual del formulario */
+.modal-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mensajes de error */
+.error-message {
+  font-size: 0.8rem;
+  color: red;
+  margin-top: 4px;
+}
+
+/* Botones del modal */
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16px;
+}
+
+.modal-confirm-button {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.modal-cancel-button {
+  border: 1px solid #ccc;
+}
+
+/* Botón de envío del formulario */
+.modal-submit-button {
+  margin-top: 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-submit-button:hover {
+  background-color: #1565c0;
+}
+
+.no-scrollbar {
+  overflow: auto; /* Mantener el scroll funcional */
+  scrollbar-width: none; /* Ocultar scrollbar en Firefox */
+  -ms-overflow-style: none; /* Ocultar scrollbar en IE y Edge */
+}
+
+/* Ocultar scrollbar en navegadores basados en Webkit (Chrome, Safari, Edge moderno) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

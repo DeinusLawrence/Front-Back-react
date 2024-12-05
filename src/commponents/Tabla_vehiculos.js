@@ -1,9 +1,11 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, TablePagination, Modal, Box, Button, CircularProgress, TextField } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { IoCarSport } from "react-icons/io5";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
+import '../Styles/Modal.css';
 
 function Tabla_Vehiculos() {
   const [Vehiculos, setVehiculos] = useState([]);
@@ -121,6 +123,9 @@ function Tabla_Vehiculos() {
 
   return (
     <>
+      <div className='Titulo'>
+        <h1> <IoCarSport className='icono' /> Peliculas</h1>
+      </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
           Agregar Registro
@@ -171,8 +176,8 @@ function Tabla_Vehiculos() {
 
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Vehículo" : "Detalles del Vehículo"}</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">{isEditable ? "Editar Vehículo" : "Detalles del Vehículo"}</h2>
           <Formik
             initialValues={selectedVehiculo || {}}
             validationSchema={isEditable ? validationSchema : null}
@@ -180,8 +185,8 @@ function Tabla_Vehiculos() {
             enableReinitialize
           >
             {({ isSubmitting }) => (
-              <Form>
-                <Field
+              <Form className='modal-form'>
+                <Field className='modal-field'
                   as={TextField}
                   name="nombre"
                   label="Nombre"
@@ -191,20 +196,20 @@ function Tabla_Vehiculos() {
                 />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }}/>
+                <Field className='modal-field' as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }}/>
                 <ErrorMessage name="modelo" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="clase" label="Clase" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="clase" label="Clase" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="clase" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="tamaño" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="numeroPasajeros" label="Pasajeros" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="numeroPasajeros" label="Pasajeros" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
                 {isEditable && (
-                  <Button
+                  <Button className="modal-submit-button"
                     type="submit"
                     variant="contained"
                     color="primary"
@@ -224,16 +229,15 @@ function Tabla_Vehiculos() {
       {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
-          <h2>¿Seguro que deseas eliminar este registro?</h2>
-          <Button
+          <h2>¿Seguro que deseas eliminar este vehiculo?</h2>
+          <Button  className="modal-confirm-button"
             variant="contained"
             color="error"
             onClick={handleEliminar}
-            sx={{ mt: 2, mr: 2 }}
           >
-            Sí, eliminar
+            Eliminar
           </Button>
-          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
+          <Button className="modal-cancel-button" variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
         </Box>
@@ -241,8 +245,8 @@ function Tabla_Vehiculos() {
 
        {/* Modal de agregar vehiculo */}
        <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <Box className="modal-content">
-          <h2>Agregar Nuevo vehiculo</h2>
+        <Box className="modal-container">
+          <h2  className="modal-title">Agregar Nuevo vehiculo</h2>
           <Formik
               initialValues={{
                 nombre: '',
@@ -260,34 +264,34 @@ function Tabla_Vehiculos() {
             >
               {({ isSubmitting }) => (
                 <Form>
-                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
                   <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="modelo" label="Modelo" fullWidth margin="normal" />
                   <ErrorMessage name="modelo" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="clase" label="Clase" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="clase" label="Clase" fullWidth margin="normal" />
                   <ErrorMessage name="clase" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="tamaño" label="Tamaño" fullWidth margin="normal" />
                   <ErrorMessage name="tamaño" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="numeroPasajeros" label="Número de Pasajeros" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="numeroPasajeros" label="Número de Pasajeros" fullWidth margin="normal" />
                   <ErrorMessage name="numeroPasajeros" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="velocidadMaximaAtmosferica" label="Velocidad Máxima Atmosférica" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="velocidadMaximaAtmosferica" label="Velocidad Máxima Atmosférica" fullWidth margin="normal" />
                   <ErrorMessage name="velocidadMaximaAtmosferica" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="capacidadMaxima" label="CapacidadMaxima" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="capacidadMaxima" label="CapacidadMaxima" fullWidth margin="normal" />
                   <ErrorMessage name="capacidadMaxima" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="tiempoMaximoConsumibles" label="Tiempo Máximo Consumibles" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="tiempoMaximoConsumibles" label="Tiempo Máximo Consumibles" fullWidth margin="normal" />
                   <ErrorMessage name="tiempoMaximoConsumibles" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="url" label="URL" fullWidth margin="normal" />
                   <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
 
-                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                  <Button className="modal-submit-button" type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
                     {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
                   </Button>
                 </Form>

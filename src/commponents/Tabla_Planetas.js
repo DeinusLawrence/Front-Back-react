@@ -5,6 +5,7 @@ import { IoMdPlanet } from "react-icons/io";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
+import '../Styles/Modal.css';
 
 function Tabla_Planetas() {
   const [Planetas, setPlanetas] = useState([]);
@@ -120,7 +121,7 @@ function Tabla_Planetas() {
   return (
     <> 
     <div className='Titulo'>
-      <h1> <IoMdPlanet /> Planetas</h1>
+      <h1> <IoMdPlanet className='icono' /> Planetas</h1>
     </div>     
     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
       <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
@@ -172,8 +173,8 @@ function Tabla_Planetas() {
 
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Planeta" : "Detalles del planeta"}</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">{isEditable ? "Editar Planeta" : "Detalles del planeta"}</h2>
           <Formik
             initialValues={selectedPlaneta || {}}
             validationSchema={isEditable ? validationSchema : null}
@@ -181,24 +182,24 @@ function Tabla_Planetas() {
             enableReinitialize
           >
             {({ isSubmitting }) => (
-              <Form>
-                <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+              <Form className='modal-form'>
+                <Field className='modal-field' as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="diametro" label="Diametro" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="diametro" label="Diametro" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="diametro" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="poblacion" label="Poblacion" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="poblacion" label="Poblacion" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="poblacion" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="clima" label="Clima" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="clima" label="Clima" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="clima" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field as={TextField} name="terreno" label="Terreno" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
+                <Field className='modal-field' as={TextField} name="terreno" label="Terreno" fullWidth margin="normal" InputProps={{ readOnly: !isEditable }} />
                 <ErrorMessage name="terreno" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
                 {isEditable && (
-                  <Button
+                  <Button className="modal-submit-button"
                     type="submit"
                     variant="contained"
                     color="primary"
@@ -218,11 +219,11 @@ function Tabla_Planetas() {
       {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
-          <h2>¿Seguro que deseas eliminar este registro?</h2>
-          <Button variant="contained" color="error" onClick={handleEliminar} sx={{ mt: 2, mr: 2 }}>
-            Sí, eliminar
+          <h2>¿Seguro que deseas eliminar este planeta?</h2>
+          <Button variant="contained" color="error" onClick={handleEliminar}>
+            Eliminar
           </Button>
-          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
+          <Button className="modal-cancel-button" variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
         </Box>
@@ -230,8 +231,8 @@ function Tabla_Planetas() {
 
       {/* Modal de agregar vehiculo */}
       <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <Box className="modal-content">
-          <h2>Agregar Nuevo planeta</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">Agregar Nuevo planeta</h2>
           <Formik
               initialValues={{
                 nombre: '',
@@ -246,25 +247,25 @@ function Tabla_Planetas() {
             >
               {({ isSubmitting }) => (
                 <Form>
-                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
                   <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="diametro" label="Diametro" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="diametro" label="Diametro" fullWidth margin="normal" />
                   <ErrorMessage name="diametro" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="poblacion" label="Poblacion" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="poblacion" label="Poblacion" fullWidth margin="normal" />
                   <ErrorMessage name="poblacion" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="clima" label="clima" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="clima" label="clima" fullWidth margin="normal" />
                   <ErrorMessage name="clima" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="terreno" label="Terreno" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="terreno" label="Terreno" fullWidth margin="normal" />
                   <ErrorMessage name="terreno" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="url" label="URL" fullWidth margin="normal" />
                   <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
 
-                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                  <Button className="modal-submit-button" type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
                     {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
                   </Button>
                 </Form>

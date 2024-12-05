@@ -1,9 +1,11 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, TablePagination, Modal, Box, Button, CircularProgress, TextField } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { IoMdPeople } from "react-icons/io";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
+import '../Styles/Modal.css';
 
 function Tabla_Especies() {
   const [Especies, setEspecies] = useState([]);
@@ -122,6 +124,9 @@ function Tabla_Especies() {
 
   return (
     <>
+      <div className='Titulo'>
+        <h1> <IoMdPeople className='icono' /> Peliculas</h1>
+      </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
           Agregar Registro
@@ -161,7 +166,7 @@ function Tabla_Especies() {
       </Paper>
       <TablePagination
         labelRowsPerPage="Registros por página"
-        rowsPerPageOptions={[5, 10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={totalCount}
         rowsPerPage={rowsPerPage}
@@ -172,8 +177,8 @@ function Tabla_Especies() {
 
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Especie" : "Detalles de la especie"}</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">{isEditable ? "Editar Especie" : "Detalles de la especie"}</h2>
           <Formik
             initialValues={selectedEspecie || {}}
             validationSchema={isEditable ? validationSchema : null}
@@ -181,8 +186,8 @@ function Tabla_Especies() {
             enableReinitialize
           >
             {({ isSubmitting }) => (
-              <Form>
-                <Field
+              <Form className='modal-form'>
+                <Field className='modal-field'
                   as={TextField}
                   name="nombre"
                   label="Nombre"
@@ -192,7 +197,7 @@ function Tabla_Especies() {
                 />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="clasificacion"
                   label="Clasificacion"
@@ -202,7 +207,7 @@ function Tabla_Especies() {
                 />
                 <ErrorMessage name="clasificacion" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="designacion"
                   label="Designacion"
@@ -212,7 +217,7 @@ function Tabla_Especies() {
                 />
                 <ErrorMessage name="designacion" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="estatura"
                   label="Estatura"
@@ -222,7 +227,7 @@ function Tabla_Especies() {
                 />
                 <ErrorMessage name="estatura" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="lenguaje"
                   label="Lenguaje"
@@ -234,12 +239,12 @@ function Tabla_Especies() {
 
                 {isEditable && (
                   <Button
+                    className="modal-submit-button"
                     type="submit"
                     variant="contained"
                     color="primary"
                     fullWidth
                     disabled={isSubmitting || isLoading}
-                    sx={{ mt: 2 }}
                   >
                     {isLoading ? <CircularProgress size={24} /> : "Guardar"}
                   </Button>
@@ -253,16 +258,19 @@ function Tabla_Especies() {
       {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
-          <h2>¿Seguro que deseas eliminar este registro?</h2>
+          <h2>¿Seguro que deseas eliminar esta especie?</h2>
           <Button
+            className="modal-confirm-button"
             variant="contained"
             color="error"
             onClick={handleEliminar}
-            sx={{ mt: 2, mr: 2 }}
           >
-            Sí, eliminar
+            Eliminar
           </Button>
-          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
+          <Button
+          className="modal-cancel-button"
+          variant="outlined" 
+          onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
         </Box>
@@ -270,8 +278,8 @@ function Tabla_Especies() {
 
         {/* Modal de agregar especie */}
         <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <Box className="modal-content">
-          <h2>Agregar Nueva especie</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">Agregar Nueva especie</h2>
           <Formik
               initialValues={{
                 nombre: '',
@@ -289,38 +297,38 @@ function Tabla_Especies() {
               onSubmit={handleAgregar}
             >
               {({ isSubmitting }) => (
-                <Form>
-                  <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                <Form >
+                  <Field className="modal-field" as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
                   <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="clasificacion" label="Clasificacion" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="clasificacion" label="Clasificacion" fullWidth margin="normal" />
                   <ErrorMessage name="clasificacion" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="designacion" label="Designacion" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="designacion" label="Designacion" fullWidth margin="normal" />
                   <ErrorMessage name="designacion" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="estatura" label="Estatura" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="estatura" label="Estatura" fullWidth margin="normal" />
                   <ErrorMessage name="estatura" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="promedioVida" label="PromedioVida" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="promedioVida" label="PromedioVida" fullWidth margin="normal" />
                   <ErrorMessage name="promedioVida" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="colorOjos" label="ColorOjos" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="colorOjos" label="ColorOjos" fullWidth margin="normal" />
                   <ErrorMessage name="colorOjos" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="colorCabello" label="ColorCabello" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="colorCabello" label="ColorCabello" fullWidth margin="normal" />
                   <ErrorMessage name="colorCabello" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="colorPiel" label="ColorPiel" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="colorPiel" label="ColorPiel" fullWidth margin="normal" />
                   <ErrorMessage name="colorPiel" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="lenguaje" label="Lenguaje" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="lenguaje" label="Lenguaje" fullWidth margin="normal" />
                   <ErrorMessage name="lenguaje" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="url" label="URL" fullWidth margin="normal" />
                   <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
 
-                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                  <Button className="modal-submit-button" type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
                     {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
                   </Button>
                 </Form>

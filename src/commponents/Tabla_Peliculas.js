@@ -1,9 +1,11 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, TablePagination, Modal, Box, Button, CircularProgress, TextField } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { MdLocalMovies } from "react-icons/md";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
+import '../Styles/Modal.css';
 
   // Validación de campos requeridos con Yup
   const validationSchema = Yup.object({
@@ -115,6 +117,9 @@ import '../Styles/Tabla.css';
 
   return (
     <>
+      <div className='Titulo'>
+        <h1> <MdLocalMovies className='icono' /> Peliculas</h1>
+      </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
           Agregar Registro
@@ -161,8 +166,8 @@ import '../Styles/Tabla.css';
 
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Pelicula" : "Detalles de la pelicula"}</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">{isEditable ? "Editar Pelicula" : "Detalles de la pelicula"}</h2>
           <Formik
             initialValues={selectedPeliculas || {}}
             validationSchema={isEditable ? validationSchema : null}
@@ -170,8 +175,8 @@ import '../Styles/Tabla.css';
             enableReinitialize
           >
             {({ isSubmitting }) => (
-              <Form>
-                <Field
+              <Form className='modal-form'>
+                <Field className='modal-field'
                   as={TextField}
                   name="titulo"
                   label="Titulo"
@@ -181,7 +186,7 @@ import '../Styles/Tabla.css';
                 />
                 <ErrorMessage name="titulo" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="director"
                   label="Director"
@@ -191,7 +196,7 @@ import '../Styles/Tabla.css';
                 />
                 <ErrorMessage name="director" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="productor"
                   label="Productor"
@@ -202,7 +207,7 @@ import '../Styles/Tabla.css';
                 <ErrorMessage name="productor" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
                 {isEditable && (
-                  <Button
+                  <Button className="modal-submit-button"
                     type="submit"
                     variant="contained"
                     color="primary"
@@ -222,11 +227,11 @@ import '../Styles/Tabla.css';
       {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
-          <h2>¿Seguro que deseas eliminar este registro?</h2>
-          <Button variant="contained" color="error" onClick={handleEliminar} sx={{ mt: 2, mr: 2 }}>
-            Sí, eliminar
+          <h2>¿Seguro que deseas eliminar esta pelicula?</h2>
+          <Button  className="modal-confirm-button" variant="contained" color="error" onClick={handleEliminar}>
+            Eliminar
           </Button>
-          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
+          <Button className="modal-cancel-button" variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
           </Button>
         </Box>
@@ -234,8 +239,8 @@ import '../Styles/Tabla.css';
 
         {/* Modal de agregar pelicula */}
         <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <Box className="modal-content">
-          <h2>Agregar Nueva pelicula</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">Agregar Nueva pelicula</h2>
           <Formik
               initialValues={{
                 titulo: '',
@@ -248,19 +253,19 @@ import '../Styles/Tabla.css';
             >
               {({ isSubmitting }) => (
                 <Form>
-                  <Field as={TextField} name="titulo" label="Titulo" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="titulo" label="Titulo" fullWidth margin="normal" />
                   <ErrorMessage name="titulo" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="director" label="Director" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="director" label="Director" fullWidth margin="normal" />
                   <ErrorMessage name="director" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="productor" label="Productor" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="productor" label="Productor" fullWidth margin="normal" />
                   <ErrorMessage name="productor" component="div" style={{ color: 'red' }} />
 
-                  <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                  <Field className="modal-field" as={TextField} name="url" label="URL" fullWidth margin="normal" />
                   <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
 
-                  <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                  <Button className="modal-submit-button" type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
                     {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
                   </Button>
                 </Form>

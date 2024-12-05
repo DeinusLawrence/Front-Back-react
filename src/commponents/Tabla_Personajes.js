@@ -145,7 +145,7 @@ import '../Styles/Modal.css';
   return (
     <>
     <div className='Titulo'>
-      <h1><FaUserAlt /> Personajes</h1>
+      <h1> <FaUserAlt className='icono' />Personajes</h1>
     </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
@@ -201,8 +201,8 @@ import '../Styles/Modal.css';
 
       {/* Modal para Ver/Editar */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5 }}>
-          <h2>{isEditable ? "Editar Personaje" : "Detalles del personaje"}</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">{isEditable ? "Editar Personaje" : "Detalles del personaje"}</h2>
           <Formik
             initialValues={selectedPersonaje || {}}
             validationSchema={isEditable ? validationSchema : null}
@@ -210,8 +210,8 @@ import '../Styles/Modal.css';
             enableReinitialize
           >
             {({ isSubmitting }) => (
-              <Form>
-                <Field
+              <Form className='modal-form'>
+                <Field className='modal-field'
                   as={TextField}
                   name="nombre"
                   label="Nombre"
@@ -221,7 +221,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="fechaNacimiento"
                   label="FechaNacimiento"
@@ -231,7 +231,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="fechaNacimiento" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="genero"
                   label="Genero"
@@ -241,7 +241,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="genero" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="colorOjos"
                   label="ColorOjos"
@@ -251,7 +251,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="colorOjos" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="altura"
                   label="Altura"
@@ -261,7 +261,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="altura" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
-                <Field
+                <Field className='modal-field'
                   as={TextField}
                   name="masa"
                   label="Masa"
@@ -272,13 +272,12 @@ import '../Styles/Modal.css';
                 <ErrorMessage name="masa" component="div" style={{ color: 'red', fontSize: '0.8rem' }} />
 
                 {isEditable && (
-                  <Button
+                  <Button className="modal-submit-button"
                     type="submit"
                     variant="contained"
                     color="primary"
                     fullWidth
                     disabled={isSubmitting || isLoading}
-                    sx={{ mt: 2 }}
                   >
                     {isLoading ? <CircularProgress size={24} /> : "Guardar"}
                   </Button>
@@ -292,9 +291,9 @@ import '../Styles/Modal.css';
       {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
-          <h2>¿Seguro que deseas eliminar este registro?</h2>
-          <Button variant="contained" color="error" onClick={handleEliminar} sx={{ mt: 2, mr: 2 }}>
-            Sí, eliminar
+          <h2>¿Seguro que deseas eliminar este personaje?</h2>
+          <Button variant="contained" color="error" onClick={handleEliminar}>
+            Eliminar
           </Button>
           <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
             Cancelar
@@ -304,8 +303,8 @@ import '../Styles/Modal.css';
 
       {/* Modal de agregar personaje */}
       <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <Box className="modal-content">
-          <h2>Agregar Nuevo Personaje</h2>
+        <Box className="modal-container">
+          <h2 className="modal-title">Agregar Nuevo Personaje</h2>
           <Formik
             initialValues={{
               nombre: '',
@@ -328,31 +327,31 @@ import '../Styles/Modal.css';
           >
             {({ isSubmitting, setFieldValue }) => (
               <Form>
-                <Field as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="nombre" label="Nombre" fullWidth margin="normal" />
                 <ErrorMessage name="nombre" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="fechaNacimiento" label="Fecha de Nacimiento" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="fechaNacimiento" label="Fecha de Nacimiento" fullWidth margin="normal" />
                 <ErrorMessage name="fechaNacimiento" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="colorOjos" label="Color de Ojos" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="colorOjos" label="Color de Ojos" fullWidth margin="normal" />
                 <ErrorMessage name="colorOjos" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="genero" label="Género" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="genero" label="Género" fullWidth margin="normal" />
                 <ErrorMessage name="genero" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="colorCabello" label="Color de Cabello" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="colorCabello" label="Color de Cabello" fullWidth margin="normal" />
                 <ErrorMessage name="colorCabello" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="altura" label="Altura" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="altura" label="Altura" fullWidth margin="normal" />
                 <ErrorMessage name="altura" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="masa" label="Masa" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="masa" label="Masa" fullWidth margin="normal" />
                 <ErrorMessage name="masa" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="colorPiel" label="Color de Piel" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="colorPiel" label="Color de Piel" fullWidth margin="normal" />
                 <ErrorMessage name="colorPiel" component="div" style={{ color: 'red' }} />
 
-                <Field
+                <Field className="modal-field"
                   as={TextField}
                   name="peliculas"
                   label="Películas"
@@ -366,7 +365,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="peliculas" component="div" style={{ color: 'red' }} />
 
-                <Field
+                <Field className="modal-field"
                   as={TextField}
                   name="especies"
                   label="Especies"
@@ -380,7 +379,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="especies" component="div" style={{ color: 'red' }} />
 
-                <Field
+                <Field className="modal-field"
                   as={TextField}
                   name="navesEspaciales"
                   label="Naves Espaciales"
@@ -394,7 +393,7 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="navesEspaciales" component="div" style={{ color: 'red' }} />
 
-                <Field
+                <Field className="modal-field"
                   as={TextField}
                   name="vehiculos"
                   label="Vehículos"
@@ -408,10 +407,10 @@ import '../Styles/Modal.css';
                 />
                 <ErrorMessage name="vehiculos" component="div" style={{ color: 'red' }} />
 
-                <Field as={TextField} name="url" label="URL" fullWidth margin="normal" />
+                <Field className="modal-field" as={TextField} name="url" label="URL" fullWidth margin="normal" />
                 <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
 
-                <Button type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                <Button className="modal-submit-button" type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
                   {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
                 </Button>
               </Form>
