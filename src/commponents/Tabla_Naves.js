@@ -2,6 +2,8 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { GiSpaceship } from "react-icons/gi";
+import { FaEye } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
@@ -149,9 +151,9 @@ function Tabla_Naves() {
                   <TableCell className="body-cell">{naveEspacial.tamaño}</TableCell>
                   <TableCell className="body-cell">{naveEspacial.numeroPasajeros}</TableCell>
                   <TableCell className="body-cell acciones">
-                    <div className='ver' onClick={() => handleVer(naveEspacial)}>Ver</div>
-                    <div className='editar' onClick={() => handleEditar(naveEspacial)}>Editar</div>
-                    <div className='eliminar' onClick={() => { setSelectedNavesEspaciales(naveEspacial); setIsDeleteModalOpen(true); }}>Eliminar</div>
+                    <div className='ver' onClick={() => handleVer(naveEspacial)}> <FaEye className='Iconos' /> </div>
+                    <div className='editar' onClick={() => handleEditar(naveEspacial)}>  <MdEdit className='Iconos' /> </div>
+                    <div className='eliminar' onClick={() => { setSelectedNavesEspaciales(naveEspacial); setIsDeleteModalOpen(true); }}> <MdDelete className='Iconos' /> </div>
                   </TableCell>
                 </TableRow>
               ))}

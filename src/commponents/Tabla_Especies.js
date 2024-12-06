@@ -2,6 +2,8 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { IoMdPeople } from "react-icons/io";
+import { FaEye } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
@@ -154,9 +156,9 @@ function Tabla_Especies() {
                   <TableCell className="body-cell">{especie.estatura}</TableCell>
                   <TableCell className="body-cell">{especie.lenguaje}</TableCell>
                   <TableCell className="body-cell acciones">
-                    <div className="ver" onClick={() => handleVer(especie)}>Ver</div>
-                    <div className="editar" onClick={() => handleEditar(especie)}>Editar</div>
-                    <div className="eliminar" onClick={() => { setSelectedEspecie(especie); setIsDeleteModalOpen(true); }}>Eliminar</div>
+                    <div className="ver" onClick={() => handleVer(especie)}>  <FaEye className='Iconos' /> </div>
+                    <div className="editar" onClick={() => handleEditar(especie)}> <MdEdit className='Iconos' /> </div>
+                    <div className="eliminar" onClick={() => { setSelectedEspecie(especie); setIsDeleteModalOpen(true); }}> <MdDelete className='Iconos' /> </div>
                   </TableCell>
                 </TableRow>
               ))}

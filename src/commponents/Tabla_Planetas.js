@@ -2,6 +2,8 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { IoMdPlanet } from "react-icons/io";
+import { FaEye } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
@@ -150,9 +152,9 @@ function Tabla_Planetas() {
                   <TableCell className="body-cell">{planeta.clima}</TableCell>
                   <TableCell className="body-cell">{planeta.terreno}</TableCell>
                   <TableCell className="body-cell acciones">
-                    <div className="ver" onClick={() => handleVer(planeta)}>ver</div>
-                    <div className="editar" onClick={() => handleEditar(planeta)}>Editar</div>
-                    <div className="eliminar" onClick={() => { setSelectedPlaneta(planeta); setIsDeleteModalOpen(true); }}>Eliminar</div>
+                    <div className="ver" onClick={() => handleVer(planeta)}>  <FaEye className='Iconos' /> </div>
+                    <div className="editar" onClick={() => handleEditar(planeta)}> <MdEdit className='Iconos' /> </div>
+                    <div className="eliminar" onClick={() => { setSelectedPlaneta(planeta); setIsDeleteModalOpen(true); }}> <MdDelete className='Iconos' /> </div>
                   </TableCell>
                 </TableRow>
               ))}

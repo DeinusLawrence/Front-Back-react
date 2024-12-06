@@ -2,6 +2,8 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { IoCarSport } from "react-icons/io5";
+import { FaEye } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
@@ -153,9 +155,9 @@ function Tabla_Vehiculos() {
                   <TableCell className="body-cell">{vehiculo.tamaño}</TableCell>
                   <TableCell className="body-cell">{vehiculo.numeroPasajeros}</TableCell>
                   <TableCell className="body-cell acciones">
-                    <div className="ver" onClick={() => handleVer(vehiculo)}>Ver</div>
-                    <div className="editar" onClick={() => handleEditar(vehiculo)}>Editar</div>
-                    <div className="eliminar" onClick={() => { setSelectedVehiculo(vehiculo); setIsDeleteModalOpen(true); }}>Eliminar</div>
+                    <div className="ver" onClick={() => handleVer(vehiculo)}> <FaEye className='Iconos' /> </div>
+                    <div className="editar" onClick={() => handleEditar(vehiculo)}> <MdEdit className='Iconos' /> </div>
+                    <div className="eliminar" onClick={() => { setSelectedVehiculo(vehiculo); setIsDeleteModalOpen(true); }}> <MdDelete className='Iconos' /> </div>
                   </TableCell>
                 </TableRow>
               ))}

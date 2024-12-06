@@ -66,8 +66,13 @@
   color: #333;
 }
 
+.Iconos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .ver {
-  padding: 5px 10px;
   background-color: #007bff;
   color: white;
   cursor: pointer;

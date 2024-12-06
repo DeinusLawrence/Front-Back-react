@@ -1,7 +1,8 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, TablePagination, Modal, Box, Button, CircularProgress, TextField } from '@mui/material';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { FaUserAlt } from "react-icons/fa";
+import { FaUserAlt, FaEye } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 import axios from 'axios';
 import * as Yup from 'yup';
 import '../Styles/Tabla.css';
@@ -176,9 +177,9 @@ import '../Styles/Modal.css';
                 <TableCell className="body-cell">{personaje.altura}</TableCell>
                 <TableCell className="body-cell">{personaje.masa}</TableCell>
                 <TableCell className="body-cell acciones">
-                  <div className="ver" onClick={() => handleVer(personaje)}> Ver </div>
-                  <div className="editar" onClick={() => handleEditar(personaje)}> Editar </div>
-                  <div className="eliminar" onClick={() => { setSelectedPersonaje(personaje); setIsDeleteModalOpen(true); }}> Eliminar </div>
+                  <div className="ver" onClick={() => handleVer(personaje)}> <FaEye className='Iconos' /> </div>
+                  <div className="editar" onClick={() => handleEditar(personaje)}> <MdEdit className='Iconos' /> </div>
+                  <div className="eliminar" onClick={() => { setSelectedPersonaje(personaje); setIsDeleteModalOpen(true); }}> <MdDelete className='Iconos' /> </div>
                 </TableCell>
               </TableRow>
             ))}
