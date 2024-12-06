@@ -148,7 +148,7 @@ import '../Styles/Modal.css';
       <h1> <FaUserAlt className='icono' />Personajes</h1>
     </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+        <Button className='Agregar_Boton' variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
           Agregar Registro
         </Button>
       </Box>
@@ -189,6 +189,7 @@ import '../Styles/Modal.css';
       </Paper>
       
       <TablePagination
+        className="paginacion-custom"
         labelRowsPerPage="Registros por página"
         rowsPerPageOptions={[5, 10, 20]}
         component="div"
@@ -288,17 +289,12 @@ import '../Styles/Modal.css';
         </Box>
       </Modal>
 
-      {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
+        <div className="modal-content">
           <h2>¿Seguro que deseas eliminar este personaje?</h2>
-          <Button variant="contained" color="error" onClick={handleEliminar}>
-            Eliminar
-          </Button>
-          <Button variant="outlined" onClick={() => setIsDeleteModalOpen(false)}>
-            Cancelar
-          </Button>
-        </Box>
+          <Button className="modal-button-submit" variant="contained" color="error" onClick={handleEliminar}> Eliminar </Button>
+          <Button className="modal-button-cancel" variant="outlined" onClick={() => setIsDeleteModalOpen(false)}> Cancelar </Button>
+        </div>
       </Modal>
 
       {/* Modal de agregar personaje */}
@@ -410,7 +406,7 @@ import '../Styles/Modal.css';
                 <Field className="modal-field" as={TextField} name="url" label="URL" fullWidth margin="normal" />
                 <ErrorMessage name="url" component="div" style={{ color: 'red' }} />
 
-                <Button className="modal-submit-button" type="submit" variant="contained" color="primary" fullWidth disabled={isSubmitting || isLoading}>
+                <Button className="modal-submit-button" type="submit" fullWidth disabled={isSubmitting || isLoading}>
                   {isLoading ? <CircularProgress size={24} /> : 'Agregar'}
                 </Button>
               </Form>

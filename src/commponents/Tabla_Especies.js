@@ -128,7 +128,7 @@ function Tabla_Especies() {
         <h1> <IoMdPeople className='icono' /> Peliculas</h1>
       </div>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
+        <Button className='Agregar_Boton' variant="contained" color="primary" onClick={() => setIsAddModalOpen(true)}>
           Agregar Registro
         </Button>
       </Box>
@@ -165,6 +165,7 @@ function Tabla_Especies() {
         </TableContainer>
       </Paper>
       <TablePagination
+        className="paginacion-custom"
         labelRowsPerPage="Registros por página"
         rowsPerPageOptions={[5, 10, 20]}
         component="div"
@@ -255,25 +256,12 @@ function Tabla_Especies() {
         </Box>
       </Modal>
 
-      {/* Modal de confirmación para eliminar */}
       <Modal open={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
-        <Box sx={{ p: 4, backgroundColor: 'white', margin: 'auto', width: 400, mt: 5, textAlign: 'center' }}>
+        <div className="modal-content">
           <h2>¿Seguro que deseas eliminar esta especie?</h2>
-          <Button
-            className="modal-confirm-button"
-            variant="contained"
-            color="error"
-            onClick={handleEliminar}
-          >
-            Eliminar
-          </Button>
-          <Button
-          className="modal-cancel-button"
-          variant="outlined" 
-          onClick={() => setIsDeleteModalOpen(false)}>
-            Cancelar
-          </Button>
-        </Box>
+          <Button className="modal-button-submit" variant="contained" color="error" onClick={handleEliminar}> Eliminar </Button>
+          <Button className="modal-button-cancel" variant="outlined" onClick={() => setIsDeleteModalOpen(false)}> Cancelar </Button>
+        </div>
       </Modal>
 
         {/* Modal de agregar especie */}
