@@ -110,8 +110,8 @@ function Tabla_Planetas() {
       const response = await axios.post('http://localhost:3000/api/planetas', nuevoPlaneta);
   
       if (response.status === 201) {
-        obtenerPlanetas(page, rowsPerPage); // Actualizar la lista de naves
-        setIsAddModalOpen(false); // Cerrar el modal
+        obtenerPlanetas(page, rowsPerPage);
+        setIsAddModalOpen(false);
       }
     } catch (error) {
       console.error("Error al agregar el planeta:", error);
