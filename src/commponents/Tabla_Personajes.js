@@ -29,6 +29,8 @@ import '../Styles/Modal.css';
     const [isLoading, setIsLoading] = useState(false); // Controla el spinner
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
     const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
+    const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false); // Notificacion agregar
+    const [notificationMessage, setNotificationMessage] = useState(''); // Notificacion agregar
 
     //Obtener Personajes
     const obtenerPersonajes = async (page, limit) => {
@@ -134,12 +136,17 @@ import '../Styles/Modal.css';
     
         if (response.status === 201) {
           obtenerPersonajes(page, rowsPerPage); // Actualizar la lista de personajes
-          setIsAddModalOpen(false); // Cerrar el modal
+          setNotificationMessage('¡Registro agregado correctamente!');
+        } else {
+          setNotificationMessage('Error: No se pudo agregar el registro.');
         }
       } catch (error) {
-        console.error("Error al agregar el personaje:", error);
+        console.error("Error al agregar la pelicula:", error);
+        setNotificationMessage('Error: No se pudo agregar el registro.');
       } finally {
         setIsLoading(false);
+        setIsAddModalOpen(false);
+        setIsNotificationModalOpen(true);
       }
     };
 
@@ -413,6 +420,16 @@ import '../Styles/Modal.css';
               </Form>
             )}
           </Formik>
+        </Box>
+      </Modal>
+
+      {/* Modal de notificación */}
+      <Modal open={isNotificationModalOpen} onClose={() => setIsNotificationModalOpen(false)}>
+        <Box className="modal-content">
+          <h2 className="modal-title">{notificationMessage}</h2>
+          <Button className='modal-button-submit' variant="contained" onClick={() => setIsNotificationModalOpen(false)}>
+            Aceptar
+          </Button>
         </Box>
       </Modal>
     </>

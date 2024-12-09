@@ -25,9 +25,11 @@ import '../Styles/Modal.css';
     const [selectedPeliculas, setSelectedPeliculas] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
-    const [isLoading, setIsLoading] = useState(false); // Controla el spinner
+    const [isLoading, setIsLoading] = useState(false); // Controla el spinner (no sirvio)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
     const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
+    const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false); // Notificacion agregar
+    const [notificationMessage, setNotificationMessage] = useState(''); // Notificacion agregar
 
     const obtenerPeliculas = async (page, limit) => {
       try {
@@ -107,13 +109,18 @@ import '../Styles/Modal.css';
       const response = await axios.post('http://localhost:3000/api/peliculas', nuevaPelicula);
   
       if (response.status === 201) {
-        obtenerPeliculas(page, rowsPerPage); // Actualizar la lista de naves
-        setIsAddModalOpen(false); // Cerrar el modal
+        obtenerPeliculas(page, rowsPerPage);
+        setNotificationMessage('¡Registro agregado correctamente!');
+      } else {
+        setNotificationMessage('Error: No se pudo agregar el registro.');
       }
     } catch (error) {
       console.error("Error al agregar la pelicula:", error);
+      setNotificationMessage('Error: No se pudo agregar el registro.');
     } finally {
       setIsLoading(false);
+      setIsAddModalOpen(false);
+      setIsNotificationModalOpen(true);
     }
   };
 
@@ -275,6 +282,16 @@ import '../Styles/Modal.css';
                 </Form>
               )}
           </Formik>
+        </Box>
+      </Modal>
+
+      {/* Modal de notificación */}
+      <Modal open={isNotificationModalOpen} onClose={() => setIsNotificationModalOpen(false)}>
+        <Box className="modal-content">
+          <h2 className="modal-title">{notificationMessage}</h2>
+          <Button className='modal-button-submit' variant="contained" onClick={() => setIsNotificationModalOpen(false)}>
+            Aceptar
+          </Button>
         </Box>
       </Modal>
     </>

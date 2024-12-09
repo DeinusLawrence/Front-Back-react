@@ -20,6 +20,8 @@ function Tabla_Planetas() {
   const [isLoading, setIsLoading] = useState(false); // Controla el spinner
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Controla el modal de eliminar
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Controla el modal de agregar
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false); // Notificacion agregar
+  const [notificationMessage, setNotificationMessage] = useState(''); // Notificacion agregar
 
   const obtenerPlanetas = async (page, limit) => {
     try {
@@ -111,12 +113,17 @@ function Tabla_Planetas() {
   
       if (response.status === 201) {
         obtenerPlanetas(page, rowsPerPage);
-        setIsAddModalOpen(false);
+        setNotificationMessage('¡Registro agregado correctamente!');
+      } else {
+        setNotificationMessage('Error: No se pudo agregar el registro.');
       }
     } catch (error) {
       console.error("Error al agregar el planeta:", error);
+      setNotificationMessage('Error: No se pudo agregar el registro.');
     } finally {
       setIsLoading(false);
+      setIsAddModalOpen(false);
+      setIsNotificationModalOpen(true);
     }
   };
 
@@ -269,6 +276,15 @@ function Tabla_Planetas() {
                 </Form>
               )}
           </Formik>
+        </Box>
+      </Modal>
+      {/* Modal de notificación */}
+      <Modal open={isNotificationModalOpen} onClose={() => setIsNotificationModalOpen(false)}>
+        <Box className="modal-content">
+          <h2 className="modal-title">{notificationMessage}</h2>
+          <Button className='modal-button-submit' variant="contained" onClick={() => setIsNotificationModalOpen(false)}>
+            Aceptar
+          </Button>
         </Box>
       </Modal>
     </>
